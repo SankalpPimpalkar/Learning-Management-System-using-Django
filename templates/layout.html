@@ -12,7 +12,8 @@
     </title>
 </head>
 <body>
-    <div class="bg-red-400 w-full h-screen font-mono">
+    {% include "header.html" %}
+    <div class="bg-pink-400 w-full h-full min-h-dvh p-5">
         {% block content %}
             Default Content
         {% endblock %}
