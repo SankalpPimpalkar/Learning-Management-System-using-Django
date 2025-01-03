@@ -42,11 +42,11 @@ class Account(AbstractBaseUser,PermissionsMixin):
     name = models.CharField(max_length=150)
     phone = models.CharField(max_length=50)
     role = models.CharField(choices=USER_ROLES, default='student',max_length=20)
-    avatar = models.FileField(blank=True, null=True,upload_to='avatars')
+    avatar = models.ImageField(blank=True, null=True,upload_to='avatars')
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    date_joined = models.DateTimeField(timezone.now())
+    date_joined = models.DateTimeField(default=timezone.now)
 
     objects = AccountManager()
 

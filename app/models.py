@@ -23,6 +23,7 @@ class Course(models.Model):
     category = models.CharField(max_length=255,choices=COURSE_CATEGORY, default='Education')
     price = models.IntegerField(default=0)
     isFree = models.BooleanField(default=True)
+    published_date = models.DateTimeField(auto_now_add=True)
     
     def save(self, *args, **kwargs):
         if self.price > 0:

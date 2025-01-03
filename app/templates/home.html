@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home | LMS
+{% endblock %}
+
+{% block content %}
+    <div>
+        <form method="get" class="w-full gap-2">
+            <!-- Search bar -->
+            <div class="mb-4">
+                <input 
+                    type="text" 
+                    name="search" 
+                    placeholder="Search Courses..." 
+                    value="{{ search_query }}" 
+                    class="w-full py-2 px-4 border rounded-md"
+                />
+            </div>
+        
+            <!-- Filters -->
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-2">
+                <!-- Approved Filter -->
+                <label class="py-2 px-4 text-center rounded-md bg-gray-100 cursor-pointer">
+                    <input 
+                        class="hidden peer" 
+                        type="checkbox" 
+                        name="approved" 
+                        value="true" 
+                        {% if is_approved %} checked {% endif %}
+                    />
+                    <span class="peer-checked:hidden">Show Approved</span>
+                    <span class="hidden peer-checked:inline">Show Rejected</span>
+                </label>                
+        
+                <!-- Sort Order -->
+                <label class="py-2 px-4 text-center rounded-md bg-gray-100 cursor-pointer">
+                    <input 
+                        class="hidden peer" 
+                        type="checkbox" 
+                        name="date_orderAsc" 
+                        {% if date_order %} checked {% endif %}
+                    />
+                    <span class="peer-checked:hidden">Show Ascending</span>
+                    <span class="hidden peer-checked:inline">Show Descending</span>
+                </label>
+
+                <!-- Submit Button -->
+                <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-md">
+                    Apply Filters
+                </button>
+            </div>
+        </form>
+        
+
+        <h2 class="text-2xl font-semibold text-gray-600 my-3">
+            Courses
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 w-full mt-2">
+            {% for course in courses %}
+                <div class="w-full course-card border rounded-md overflow-hidden">
+                    <!-- Course Thumbnail -->
+                    <div class="w-full aspect-auto bg-gray-200 flex items-center justify-center">
+                        <img class="w-full h-full object-cover" src="{{ course.thumbnail.url }}" alt="{{cours.name}}">
+                    </div>                
+                    
+                    <!-- Course Content -->
+                    <div class="p-4">
+                        <!-- Course Title -->
+                        <h2 class="text-xl font-semibold text-gray-800">
+                            {{course.name}}
+                        </h2>
+                        
+                        <!-- Course Category -->
+                        <p class="text-sm text-gray-500 mb-2">
+                            Category: {{course.category}}
+                        </p>
+                        
+                        <!-- Course Description -->
+                        <p class="text-gray-700 mb-4">
+                            {{course.description|truncatewords:9 }}
+                        </p>
+                        
+                        <!-- Owner and Approval Status -->
+                        <div class="flex items-center justify-between mb-4">
+                            <p class="text-sm text-gray-600">
+                                By: {{course.owner.name}}
+                            </p>
+                                {% if course.is_approved %}
+                                    <p class="text-sm text-green-500">
+                                        Verified
+                                    </p>
+                                {% else %}
+                                    <p class="text-sm text-red-500">
+                                        Not Verified
+                                    </p>
+                                {% endif %}
+                        </div>
+                        
+                        <!-- Price and Enroll Button -->
+                        <div class="flex items-center justify-between">
+                            <span class="text-green-600 font-bold">
+                                {% if course.isFree %}
+                                    Free
+                                {% else %}
+                                    ₹{{course.price}}
+                                {% endif %}
+                            </span>
+                            <a 
+                                href="#" 
+                                class="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600"
+                            >
+                                View Course
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="space-y-2">
+                    <p class="text-gray-600">No courses Found</p>
+                    <p class="text-gray-600">
+                        We couldn't find any courses matching your search or filters.
+                        <a href="{% url 'home' %}" class="text-indigo-600 font-semibold px-1">
+                            Reset filter
+                        </a>
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

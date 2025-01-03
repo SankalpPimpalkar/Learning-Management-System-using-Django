@@ -7,17 +7,21 @@
     <link rel="stylesheet" href="{% static '/css/output.css' %}">
     <title>
         {% block title %}
-            Default Title
+            Default AuthLayout Title
         {% endblock %}
     </title>
 </head>
 <body>
-    {% include "header.html" %}
-    <div class="container mx-auto h-full p-5 bg-none">
+    <div class="w-full pt-5">
         {% block content %}
-            Default Content
+            Default AuthLayout Content
         {% endblock %}
     </div>
-    {% include "footer.html" %}
+
+    {% block script %}
+        <script>
+            console.log('hello World')
+        </script>
+    {% endblock %}
 </body>
 </html>
